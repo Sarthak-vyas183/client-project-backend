@@ -1,19 +1,27 @@
-import mongoose, {schema} from mongoose;
+import mongoose,{Schema} from "mongoose";
 import jwt from "jsonwebtoken"
 import bcrypt, { hash } from "bcrypt"
 
 const userSchema = new Schema({
-     fullname : {
+     fullName : {
         type : String,
         require : true,
      },
+
+     username : {
+       type : String,
+       unique : true,
+       lowecase: true,
+       trim: true, 
+     },
+
      email: {
         type: String,
         required: true,
         unique: true,
         lowecase: true,
         trim: true, 
-    },
+     },
     contact : {
         type : Number,
         require : true,
@@ -21,7 +29,6 @@ const userSchema = new Schema({
     
     avatar: {
         type: String, // cloudinary url
-        required: true,
     },
     password: {
         type: String,
@@ -72,4 +79,4 @@ userSchema.methods.generateRefreshToken = function(){
 }
 
 
-export const  userModel = mongoose.model("Users", userSchema)
+export const userModel = mongoose.model("Users", userSchema)

@@ -1,5 +1,5 @@
 import dotenv from "dotenv"
-import dbConnect from "./src/db/dbConnect"
+import dbConnect from "./src/db/dbConnect.js"
 import { app } from "./app.js"  
 
 dotenv.config({
