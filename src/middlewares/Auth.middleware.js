@@ -1,11 +1,12 @@
 import jwt from "jsonwebtoken";
-import {userModel} from "../models/UserModel"
+import { userModel } from "../models/UserModel.js";
 
 export const verifyJWT = async (req, res, next) => {
   try {
     const token =
       req.cookies?.accessToken ||
       req.header("Authorization")?.replace("Bearer ", "");
+      console.log(token)
     if (!token) {
       res.status(404).send("Invalid Token : Unauthorized entry")
     }
@@ -15,11 +16,11 @@ export const verifyJWT = async (req, res, next) => {
       .findById(decodedData._id)
       .select("-password -refreshToken");
     if (!user) {
-      throw new ApiError(401, "Invalid token Access");
+      return res.status(409).send("Invalid Token access");
     }
     req.user = user;
     next();
   } catch (error) {
-    throw new ApiError(401, error?.message || "Invalid Access Token");
+    return res.status(500).send(`error found : ${error || "invalid Access Token"}`)
   }
 };

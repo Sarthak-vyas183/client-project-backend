@@ -11,10 +11,7 @@ const generateAccessAndRefereshTokens = async (userId) => {
 
     return { accessToken, refreshToken };
   } catch (error) {
-    throw new ApiError(
-      500,
-      "Something went wrong while generating referesh and access token"
-    );
+   return res.status(500).send("something went wrong ! please try again")
   }
 };
 
@@ -134,4 +131,29 @@ const registerUser = async (req, res) => {
     });
 };
 
-export { loginUser, registerUser };
+const logoutuser = async (req, res) => {
+  await userModel.findByIdAndUpdate(
+    req.user._id,
+    {
+      $unset: {
+        refreshToken: 1, // this removes the field from document
+      },
+    },
+    {
+      new: true,
+    }
+  );
+
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
+
+  return res
+    .status(200)
+    .clearCookie("accessToken", options)
+    .clearCookie("refreshToken", options)
+    .json({data : {}, msg : "loggedout" });
+};
+
+export { loginUser, registerUser, logoutuser };
