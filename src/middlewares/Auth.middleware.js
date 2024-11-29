@@ -1,12 +1,11 @@
 import jwt from "jsonwebtoken";
 import { userModel } from "../models/UserModel.js";
 
-export const verifyJWT = async (req, res, next) => {
+ const verifyJWT = async (req, res, next) => {
   try {
     const token =
       req.cookies?.accessToken ||
       req.header("Authorization")?.replace("Bearer ", "");
-      console.log(token)
     if (!token) {
       res.status(404).send("Invalid Token : Unauthorized entry")
     }
@@ -23,4 +22,17 @@ export const verifyJWT = async (req, res, next) => {
   } catch (error) {
     return res.status(500).send(`error found : ${error || "invalid Access Token"}`)
   }
-};
+}; 
+
+const adminVerify = async(req, res, next) => {
+  try {
+    if(!req.user.isAdmin) {
+      return res.status(409).send("unauthorized Access");
+    }
+    next();
+  } catch (error) {
+    return res.status(500).send(`error found : ${error || "invalid Access Token"}`)
+  }
+}
+
+export {verifyJWT, adminVerify}

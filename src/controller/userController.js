@@ -11,7 +11,7 @@ const generateAccessAndRefereshTokens = async (userId) => {
 
     return { accessToken, refreshToken };
   } catch (error) {
-   return res.status(500).send("something went wrong ! please try again")
+    return res.status(500).send("something went wrong ! please try again");
   }
 };
 
@@ -153,7 +153,7 @@ const logoutuser = async (req, res) => {
     .status(200)
     .clearCookie("accessToken", options)
     .clearCookie("refreshToken", options)
-    .json({data : {}, msg : "loggedout" });
+    .json({ data: {}, msg: "loggedout" });
 };
 
 export { loginUser, registerUser, logoutuser };

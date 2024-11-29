@@ -27,10 +27,16 @@ const userSchema = new Schema(
       type: Number,
       require: true,
     },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
 
     avatar: {
       type: String, // cloudinary url
+      default: "../../public/DefaultImgs/defaultProfile.png",
     },
+
     password: {
       type: String,
       required: [true, "Password is required"],

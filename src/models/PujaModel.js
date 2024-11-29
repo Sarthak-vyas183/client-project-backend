@@ -1,7 +1,16 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, SchemaType } from "mongoose";
 
 const pujaSchema = new Schema(
   {
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "Users",
+      require: true,
+    },
+    pujaImg: {
+      type: String,
+      require: true, //cloudinary url
+    },
     pujaName: {
       type: String,
       require: true,
@@ -20,18 +29,22 @@ const pujaSchema = new Schema(
 
     price: {
       type: Number,
+      default: 0,
     },
 
     Instructor: {
       type: String,
+      default: "Not Declare",
     },
 
     isServiceAvailable: {
       type: Boolean,
+      default: true,
     },
 
     Instructions: {
       type: String,
+      default: "Not Declare",
     },
   },
   {

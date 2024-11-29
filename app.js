@@ -15,7 +15,9 @@ app.use(cookieParser())
 
 //router import statements
 import userRouter from "./src/routes/userRouter.js"
+import PujasRouter from "./src/routes/PujasRouter.js"
 
 app.use("/api/v1/user" , userRouter);
+app.use("/api/v1/puja", PujasRouter);
 
 export {app}
