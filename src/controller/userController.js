@@ -74,7 +74,6 @@ const loginUser = async (req, res) => {
 
 const registerUser = async (req, res) => {
   const { email, fullName, password, username, contact } = req.body;
-  console.log(req.body);
   if (
     [email, fullName, password, username, contact].some(
       (field) => !field || field.trim() === ""
@@ -156,4 +155,9 @@ const logoutuser = async (req, res) => {
     .json({ data: {}, msg: "loggedout" });
 };
 
-export { loginUser, registerUser, logoutuser };
+const verificationDone = (req, res) => {
+  const user = req.user;
+  res.status(201).json({ msg: "token verification Success", userdata: user });
+};
+
+export { loginUser, registerUser, logoutuser, verificationDone };

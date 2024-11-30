@@ -1,13 +1,13 @@
 import jwt from "jsonwebtoken";
 import { userModel } from "../models/UserModel.js";
 
- const verifyJWT = async (req, res, next) => {
+const verifyJWT = async (req, res, next) => {
   try {
     const token =
       req.cookies?.accessToken ||
       req.header("Authorization")?.replace("Bearer ", "");
     if (!token) {
-      res.status(404).send("Invalid Token : Unauthorized entry")
+      res.status(404).send("Invalid Token : Unauthorized entry");
     }
 
     const decodedData = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
@@ -20,19 +20,23 @@ import { userModel } from "../models/UserModel.js";
     req.user = user;
     next();
   } catch (error) {
-    return res.status(500).send(`error found : ${error || "invalid Access Token"}`)
+    return res
+      .status(500)
+      .send(`error found : ${error || "invalid Access Token"}`);
   }
-}; 
+};
 
-const adminVerify = async(req, res, next) => {
+const adminVerify = async (req, res, next) => {
   try {
-    if(!req.user.isAdmin) {
+    if (!req.user.isAdmin) {
       return res.status(409).send("unauthorized Access");
     }
     next();
   } catch (error) {
-    return res.status(500).send(`error found : ${error || "invalid Access Token"}`)
+    return res
+      .status(500)
+      .send(`error found : ${error || "invalid Access Token"}`);
   }
-}
+};
 
-export {verifyJWT, adminVerify}
+export { verifyJWT, adminVerify };

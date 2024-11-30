@@ -24,7 +24,7 @@ const userSchema = new Schema(
       trim: true,
     },
     contact: {
-      type: Number,
+      type: String,
       require: true,
     },
     isAdmin: {
