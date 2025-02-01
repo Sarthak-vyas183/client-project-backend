@@ -1,5 +1,5 @@
 import { userModel } from "../models/UserModel.js";
-
+import { uploadOnCloudinary } from "../utils/uploadOnCloudinary.js";
 const generateAccessAndRefereshTokens = async (userId) => {
   try {
     const user = await userModel.findById(userId);
@@ -155,9 +155,36 @@ const logoutuser = async (req, res) => {
     .json({ data: {}, msg: "loggedout" });
 };
 
+const updateProfileImage = async (req, res) => {
+  try {
+     const avatarLocalPath = req.file?.path;
+     if(!avatarLocalPath) return res.status(400).json({msg : "Please provide an image"});
+     const avatarUrl = await uploadOnCloudinary(avatarLocalPath); 
+     console.log(avatarUrl);
+     if(!avatarUrl) return res.status(500).json({msg : "Something went wrong while uploading image"});
+     const user = await userModel
+     .findByIdAndUpdate(
+       req.user?._id,
+       {
+         $set: {
+           avatar: avatarUrl.url,
+         },
+       },
+       { new: true }
+     )
+     .select("-password -refreshToken"); 
+     if(!user) return res.status(500).json({msg : "Something went wrong while updating image"});
+     res.status(200).json({msg : "Image uploaded successfully", data : user});
+
+  } catch (error) {
+    res.send(error) 
+  }
+  
+}
+
 const verificationDone = (req, res) => {
   const user = req.user;
   res.status(201).json({ msg: "token verification Success", userdata: user });
 };
 
-export { loginUser, registerUser, logoutuser, verificationDone };
+export { loginUser, registerUser, logoutuser, verificationDone, updateProfileImage };
