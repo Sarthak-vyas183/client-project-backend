@@ -160,7 +160,6 @@ const updateProfileImage = async (req, res) => {
      const avatarLocalPath = req.file?.path;
      if(!avatarLocalPath) return res.status(400).json({msg : "Please provide an image"});
      const avatarUrl = await uploadOnCloudinary(avatarLocalPath); 
-     console.log(avatarUrl);
      if(!avatarUrl) return res.status(500).json({msg : "Something went wrong while uploading image"});
      const user = await userModel
      .findByIdAndUpdate(
