@@ -35,6 +35,11 @@ const userSchema = new Schema(
     avatar: {
       type: String, // cloudinary url
       default: "../../public/DefaultImgs/defaultProfile.png",
+    }, 
+
+    bio: {
+      type : String,
+      default: "Hey there! I am new user of this platform. I am excited to be here!",
     },
 
     password: {

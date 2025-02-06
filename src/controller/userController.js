@@ -181,9 +181,36 @@ const updateProfileImage = async (req, res) => {
   
 }
 
+const updateProfile = async (req, res) => { 
+  try {
+    const { fullName, username, bio, contact, email } = req.body;
+    const user = await userModel.findByIdAndUpdate(
+      req.user?._id,
+      {
+        $set: {
+          fullName,
+          username,
+          bio,
+          contact,
+          email,
+        },
+      },
+      { new: true }
+    ).select("-password -refreshToken");
+
+    if (!user) {
+      return res.status(500).json({ msg: "Something went wrong while updating profile" });
+    }
+
+    res.status(200).json({ msg: "Profile updated successfully", data: user });
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
 const verificationDone = (req, res) => {
   const user = req.user;
   res.status(201).json({ msg: "token verification Success", userdata: user });
 };
 
-export { loginUser, registerUser, logoutuser, verificationDone, updateProfileImage };
+export { loginUser, registerUser, logoutuser, verificationDone, updateProfileImage, updateProfile };
